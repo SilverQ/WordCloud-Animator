@@ -31,7 +31,7 @@ input_file = 'test_data.txt'
 font_path = 'NanumGothic.ttf'
 train = pd.read_csv(input_file, delimiter='\t')
 print(f'total data length: {len(train)}')
-# print(train.head())
+print(train.head())
 
 sentences = list(train['발명의명칭'])
 # print(sentences[1])
@@ -56,12 +56,13 @@ img_path = 'img/'
 img_list = []
 img_fn_list = []
 
-for i in range(10):
+for i in range(6):
     input = ' '.join(sentences[1+i:30+i])
     wc = WordCloud(font_path=font_path, stopwords=stopwords,
-                   max_words=100, random_state=42).generate(input)
+                   max_words=150, random_state=42,
+                   width=640, height=480).generate(input)
     # wc.generate(tokenized_by_space)
-    f = plt.figure(figsize=(20, 20))
+    f = plt.figure(figsize=(20, 10))
     img_list.append(f)
     plt.imshow(wc)
     plt.axis("off")
@@ -83,4 +84,4 @@ for i in range(10):
 # create_animation(images, 'gif/animation3.gif')
 
 images = [np.array(imageio.imread(img)) for img in img_fn_list]
-imageio.mimsave('gif/animation3.gif', images, fps=3)
+imageio.mimsave('gif/animation3.gif', images, fps=2)
