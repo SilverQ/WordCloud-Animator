@@ -28,13 +28,21 @@ import imageio
 # base_path
 # input_file = base_path + 'test_data.txt'
 input_file = 'test_data.txt'
+
+# 전체 컬럼 : 특허번호	출원번호	출원접수국가	출원일	국제특허분류(IPC)	발명의명칭	출원인/특허권자	요약	대표청구항	과제	해결방안
+# 정렬 컬럼 : 출원일
+# 필터 컬럼 :
+# 입력 문자열 :  발명의명칭, 출원인/특허권자, 요약, 대표청구항, 과제, 해결방안
+
 font_path = 'NanumGothic.ttf'
 train = pd.read_csv(input_file, delimiter='\t')
+train.sort_values(['출원일'], ascending=[True])
 print(f'total data length: {len(train)}')
 print(train.head())
 
-sentences = list(train['발명의명칭'])
-# print(sentences[1])
+# sentences = list(train['발명의명칭'])
+sentences = list(train['요약'])
+print(sentences[1])
 
 # okt = Okt()
 # tokenized_by_space = [s.split() for s in sentences]
@@ -47,16 +55,17 @@ stopwords.add('위한')
 stopwords.add('제조')
 stopwords.add('제조방법')
 stopwords.add('장치')
-# stopwords.add('방법')
-# stopwords.add('방법')
-# stopwords.add('방법')
+stopwords.add('상기')
+stopwords.add('발명은')
+stopwords.add('또는')
 # stopwords.add('방법')
 
 img_path = 'img/'
 img_list = []
 img_fn_list = []
 
-for i in range(6):
+# len_img = len(sentences)-1
+for i in range(50):
     input = ' '.join(sentences[1+i:30+i])
     wc = WordCloud(font_path=font_path, stopwords=stopwords,
                    max_words=150, random_state=42,
@@ -84,4 +93,7 @@ for i in range(6):
 # create_animation(images, 'gif/animation3.gif')
 
 images = [np.array(imageio.imread(img)) for img in img_fn_list]
-imageio.mimsave('gif/animation3.gif', images, fps=2)
+imageio.mimsave('gif/animation_abst.gif', images, fps=2)
+#
+# images = [np.array(img) for img in img_list]
+# imageio.mimsave('gif/animation_abst.gif', images, fps=2)
