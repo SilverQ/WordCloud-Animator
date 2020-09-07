@@ -79,18 +79,19 @@ img_fn_list = []
 #     plt.savefig(img_path + 'wordcloud_' + str(i) + '.png')
 
 
-def create_wordcloud(text, filter=3, stride=1, padding=0):
+def create_wordcloud(text, filter=3, stride=1, padding=0, maxword=150, randomstate=42):
     # len_img = len(sentences)-1
     for i in range(0, len(text)-filter-1, stride):
         input = ' '.join(text[1+i:filter+i])
         wc = WordCloud(font_path=font_path, stopwords=stopwords,
-                       max_words=150, random_state=42,
-                       width=640, height=480).generate(input)
+                       max_words=maxword, random_state=randomstate,
+                       width=1600, height=800).generate(input)
         # wc.generate(tokenized_by_space)
         f = plt.figure(figsize=(20, 10))
         img_list.append(f)
         plt.imshow(wc)
         plt.axis("off")
+        plt.tight_layout(pad=0)
         img_fn_list.append(img_path+'wordcloud_'+str(i)+'.png')
         plt.savefig(img_path+'wordcloud_'+str(i)+'.png')
     return img_fn_list, img_list
@@ -110,9 +111,9 @@ def create_wordcloud(text, filter=3, stride=1, padding=0):
 # create_animation(images, 'gif/animation3.gif')
 
 # images = create_wordcloud(sentences[:10], filter=3, stride=1)[1]
-img_fn_list = create_wordcloud(sentences[:20], filter=5, stride=5)[0]
+img_fn_list = create_wordcloud(sentences[:20], filter=5, stride=1, maxword=50, randomstate=42)[0]
 images = [np.array(imageio.imread(img)) for img in img_fn_list]
-imageio.mimsave('gif/animation_abst.gif', images, fps=2)
+imageio.mimsave('gif/animation_abst.gif', images, fps=1)
 #
 # images = [np.array(img) for img in img_list]
 # imageio.mimsave('gif/animation_abst.gif', images, fps=2)
