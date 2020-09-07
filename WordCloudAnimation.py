@@ -49,6 +49,9 @@ print(sentences[1])
 # tokenized_by_morph = [okt.morphs(s) for s in sentences]
 # tokenized_by_char = [list(s) for s in sentences]
 
+# print(STOPWORDS)
+
+img_path = 'img/'
 stopwords = set(STOPWORDS)
 stopwords.add('방법')
 stopwords.add('위한')
@@ -59,24 +62,38 @@ stopwords.add('상기')
 stopwords.add('발명은')
 stopwords.add('또는')
 # stopwords.add('방법')
-
-img_path = 'img/'
 img_list = []
 img_fn_list = []
 
-# len_img = len(sentences)-1
-for i in range(50):
-    input = ' '.join(sentences[1+i:30+i])
-    wc = WordCloud(font_path=font_path, stopwords=stopwords,
-                   max_words=150, random_state=42,
-                   width=640, height=480).generate(input)
-    # wc.generate(tokenized_by_space)
-    f = plt.figure(figsize=(20, 10))
-    img_list.append(f)
-    plt.imshow(wc)
-    plt.axis("off")
-    img_fn_list.append(img_path+'wordcloud_'+str(i)+'.png')
-    plt.savefig(img_path+'wordcloud_'+str(i)+'.png')
+# for i in range(50):
+#     input = ' '.join(sentences[1 + i:30 + i])
+#     wc = WordCloud(font_path=font_path, stopwords=stopwords,
+#                    max_words=150, random_state=42,
+#                    width=640, height=480).generate(input)
+#     # wc.generate(tokenized_by_space)
+#     f = plt.figure(figsize=(20, 10))
+#     img_list.append(f)
+#     plt.imshow(wc)
+#     plt.axis("off")
+#     img_fn_list.append(img_path + 'wordcloud_' + str(i) + '.png')
+#     plt.savefig(img_path + 'wordcloud_' + str(i) + '.png')
+
+
+def create_wordcloud(text, filter=3, stride=1, padding=0):
+    # len_img = len(sentences)-1
+    for i in range(0, len(text)-filter-1, stride):
+        input = ' '.join(text[1+i:filter+i])
+        wc = WordCloud(font_path=font_path, stopwords=stopwords,
+                       max_words=150, random_state=42,
+                       width=640, height=480).generate(input)
+        # wc.generate(tokenized_by_space)
+        f = plt.figure(figsize=(20, 10))
+        img_list.append(f)
+        plt.imshow(wc)
+        plt.axis("off")
+        img_fn_list.append(img_path+'wordcloud_'+str(i)+'.png')
+        plt.savefig(img_path+'wordcloud_'+str(i)+'.png')
+    return img_fn_list, img_list
 
 
 # def create_animation(images, fpath):
@@ -92,6 +109,8 @@ for i in range(50):
 # images = [imageio.imread(img) for img in img_fn_list]
 # create_animation(images, 'gif/animation3.gif')
 
+# images = create_wordcloud(sentences[:10], filter=3, stride=1)[1]
+img_fn_list = create_wordcloud(sentences[:20], filter=5, stride=5)[0]
 images = [np.array(imageio.imread(img)) for img in img_fn_list]
 imageio.mimsave('gif/animation_abst.gif', images, fps=2)
 #
