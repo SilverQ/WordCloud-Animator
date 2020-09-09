@@ -3,6 +3,8 @@ import pandas as pd
 from wordcloud import WordCloud, STOPWORDS
 import matplotlib.pyplot as plt
 import imageio
+from konlpy.tag import Okt
+# import nltk
 # from PIL import Image
 # import csv
 # import pickle
@@ -14,10 +16,8 @@ import imageio
 # import psycopg2 as pg2
 # !pip install konlpy
 # !pip install -q wordcloud
-# from konlpy.tag import Okt
 # !pip install python-levenshtein
 # !pip install -q wordcloud
-# import nltk
 # import wordcloud
 # import Levenshtein
 # nltk.download('punkt')
@@ -53,6 +53,11 @@ print(sentences[1])
 
 img_path = 'img/'
 stopwords = set(STOPWORDS)
+# stopwords = nltk.corpus.stopwords.words('korean')
+# print(stopwords[:10])
+# 'C:\\Users\\Administrator\\AppData\\Roaming\\nltk_data\\corpora\\stopwords\\
+# NLTK에는 한글 불용어가 없군
+
 stopwords.add('방법')
 stopwords.add('위한')
 stopwords.add('제조')
@@ -77,6 +82,11 @@ img_fn_list = []
 #     plt.axis("off")
 #     img_fn_list.append(img_path + 'wordcloud_' + str(i) + '.png')
 #     plt.savefig(img_path + 'wordcloud_' + str(i) + '.png')
+
+
+def stopwords(input_text, stopwords):
+
+    return stopwords
 
 
 def create_wordcloud(text, filter=3, stride=1, padding=0, maxword=150, randomstate=42):
